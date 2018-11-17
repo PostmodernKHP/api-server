@@ -27,12 +27,11 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_POST(self):
       content_len = int(self.headers['Content-Length'])
       # grab data here
-      post_body = self.rfile.read(content_len)
+      post_body = self.rfile.read(content_len).decode('UTF-8')
       print(post_body)
       # create new user
       if self.path == '/user':
-        new_user = json.loads(post_body.decode('UTF-8'))
-        print(new_user)
+        new_user = json.loads(post_body)
         user_id = new_user.pop('id')
         PENDING_USERS[user_id] = new_user
 
