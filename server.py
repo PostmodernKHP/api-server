@@ -13,23 +13,22 @@ PENDING_USERS = {
 
 class MyHandler(BaseHTTPRequestHandler):
 
-   def do_OPTIONS(self):
-        self.send_response(200, "ok")
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
-        self.end_headers()
+  def do_OPTIONS(self):
+    self.send_response(200, "ok")
+    self.send_header('Access-Control-Allow-Origin', '*')
+    self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
 
-    def do_GET(self):
-      # Handle for different GET endpoints
-      if self.path == '/userid':
-        data = {'userId': str(uuid4())}
-      elif self.path == '/pendinguser':
-        data = PENDING_USERS
-      else:
-        data = {'nothingHere': None}
+  def do_GET(self):
+    # Handle for different GET endpoints
+    if self.path == '/userid':
+      data = {'userId': str(uuid4())}
+    elif self.path == '/pendinguser':
+      data = PENDING_USERS
+    else:
+      data = {'nothingHere': None}
 
-      self.respond(data)
+    self.respond(data)
 
     def do_POST(self):
       content_len = int(self.headers['Content-Length'])
