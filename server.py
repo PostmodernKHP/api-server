@@ -22,7 +22,6 @@ class MyHandler(BaseHTTPRequestHandler):
         data = {'nothingHere': None}
 
       self.respond(data)
-      PENDING_USERS[str(uuid4())] = 'HI'
 
     def do_POST(self):
       content_len = int(self.headers['Content-Length'])
@@ -36,6 +35,7 @@ class MyHandler(BaseHTTPRequestHandler):
         PENDING_USERS[user_id] = new_user
 
       self.send_response(200)
+      self.send_header("Access-Control-Allow-Origin", "*")
       self.end_headers()
 
 
