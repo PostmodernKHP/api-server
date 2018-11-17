@@ -9,18 +9,20 @@ PORT_NUMBER = 9000
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+      # Handle for different GET endpoints
       if self.path == '/userid':
         data = {'userId': str(uuid4())}
       else:
         data = {'nothingHere': 123}
+
+      self.respond(data)
+
+    def respond(self, data):
       data = json.dumps(data)
       self.send_response(200)
       self.send_header('Content-type', 'application/json')
       self.end_headers()
       self.wfile.write(bytes(data, 'UTF-8'))
-
-    def respond(self, data):
-      data = json.dumps(data)
 
 
 if __name__ == '__main__':
