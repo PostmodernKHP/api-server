@@ -15,7 +15,9 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
       # Handle for different GET endpoints
       if self.path == '/userid':
-        data = {'userId': str(uuid4())}
+        uid = str(uuid4())
+        data = {'userId': uid}
+        PENDING_USERS[uid] =  {'severity': 50}
       elif self.path == '/pendinguser':
         data = PENDING_USERS
       else:
