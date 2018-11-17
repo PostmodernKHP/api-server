@@ -5,17 +5,38 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 HOST_NAME = 'localhost'
 PORT_NUMBER = 9000
-
+PENDING_USERS = {
+  '0243cf5e-98d3-4e17-1234-151e8b7ef750': {'severity': 55},
+  '2': {'severity': 15},
+  '3': {'severity': 90}
+  }
 
 class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
       # Handle for different GET endpoints
       if self.path == '/userid':
         data = {'userId': str(uuid4())}
+      elif self.path == '/pendinguser':
+        data = PENDING_USERS
       else:
-        data = {'nothingHere': 123}
+        data = {'nothingHere': None}
 
       self.respond(data)
+
+    def do_POST(self):
+      content_len = int(self.headers['Content-Length'])
+      # grab data here
+      post_body = self.rfile.read(content_len)
+      # create new user
+      if self.path == '/user':
+        new_user = json.loads(post_body)
+        print(new_user)
+        user_id = new_user.pop('id')
+        PENDING_USERS[user_id] = new_user
+
+      self.send_response(200)
+      self.end_headers()
+
 
     def respond(self, data):
       data = json.dumps(data)
