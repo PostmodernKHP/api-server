@@ -30,31 +30,6 @@ class MyHandler(BaseHTTPRequestHandler):
 
     self.respond(data)
 
-    def do_POST(self):
-      content_len = int(self.headers['Content-Length'])
-      # grab data here
-      post_body = self.rfile.read(content_len).decode('UTF-8')
-      print(post_body)
-      # create new user
-      if self.path == '/user':
-        new_user = json.loads(post_body)
-        user_id = new_user.pop('id')
-        PENDING_USERS[user_id] = new_user
-
-      self.send_response(200)
-      self.send_header("Access-Control-Allow-Origin", "*")
-      self.end_headers()
-
-
-    def respond(self, data):
-      data = json.dumps(data)
-      self.send_response(200)
-      self.send_header('Content-type', 'application/json')
-      self.send_header("Access-Control-Allow-Origin", "*")
-      self.end_headers()
-      self.wfile.write(bytes(data, 'UTF-8'))
-
-
 if __name__ == '__main__':
     server_class = HTTPServer
     httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
