@@ -29,7 +29,7 @@ class MyHandler(BaseHTTPRequestHandler):
       post_body = self.rfile.read(content_len)
       # create new user
       if self.path == '/user':
-        new_user = json.loads(post_body)
+        new_user = json.loads(post_body.decode('UTF-8'))
         print(new_user)
         user_id = new_user.pop('id')
         PENDING_USERS[user_id] = new_user
